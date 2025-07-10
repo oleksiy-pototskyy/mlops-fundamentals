@@ -24,7 +24,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4  # Pre-built action to install Python
         with:
-          python-version: '3.13.5'     # Specify exact Python version
+          python-version: '3.10'     # Specify exact Python version
 
       # Step 3: Install project dependencies
       - name: Install dependencies

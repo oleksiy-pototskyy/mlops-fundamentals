@@ -2,10 +2,6 @@
 
 A comprehensive machine learning project demonstrating MLOps practices using the Titanic dataset. This project covers the complete ML pipeline from data preprocessing to model deployment using modern DevOps tools.
 
-## Educational Video Course MLOps Fundamentals 
-
-This course is part of MLOps Specialization and it's available by the next link https://nubes.academy/courses/mlops-fundamentals-mlops-specialization/ 
-
 ## 📁 Project Structure
 
 ```

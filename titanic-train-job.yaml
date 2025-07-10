@@ -1,27 +1,42 @@
-apiVersion: batch/v1
-kind: Job
+# Kubernetes Job for ML Training Pipeline
+# Jobs run pods to completion (unlike Deployments that run continuously)
+apiVersion: batch/v1          # API version for batch workloads
+kind: Job                     # Resource type: one-time task execution
+
+# METADATA: Information about this Job
 metadata:
-  name: titanic-train-job
-  labels:
-    app: titanic-trainer
-    version: v1
+  name: titanic-train-job     # Unique name for this Job
+  labels:                     # Key-value pairs for organization
+    app: titanic-trainer      # Application identifier
+    version: v1               # Version tag
+
+# SPECIFICATION: How the Job should behave
 spec:
+  # POD TEMPLATE: Defines the pod that will run the job
   template:
     metadata:
       labels:
-        app: titanic-trainer
+        app: titanic-trainer  # Pod labels (should match Job labels)
+    
+    # POD SPECIFICATION: What runs inside the pod
     spec:
       containers:
-        - name: titanic-trainer
-          image: titanic-train:latest
-          imagePullPolicy: IfNotPresent
+        - name: titanic-trainer           # Container name
+          image: titanic-train:latest     # Docker image to run
+          imagePullPolicy: IfNotPresent   # Only pull if image not locally available
+          
+          # RESOURCE MANAGEMENT: CPU and memory allocation
           resources:
-            requests:
-              memory: "512Mi"
-              cpu: "500m"
-            limits:
-              memory: "1Gi"
-              cpu: "1000m"
-      restartPolicy: Never
-  backoffLimit: 2
-  ttlSecondsAfterFinished: 3600
+            requests:           # Minimum resources guaranteed
+              memory: "512Mi"   # 512 megabytes of RAM
+              cpu: "500m"       # 0.5 CPU cores (500 millicores)
+            limits:             # Maximum resources allowed
+              memory: "1Gi"     # 1 gigabyte of RAM
+              cpu: "1000m"      # 1 CPU core (1000 millicores)
+      
+      # RESTART POLICY: What to do when container exits
+      restartPolicy: Never      # Don't restart - Job handles retries
+  
+  # JOB BEHAVIOR SETTINGS
+  backoffLimit: 2             # Maximum number of retries if job fails
+  ttlSecondsAfterFinished: 3600  # Auto-delete job 1 hour after completion

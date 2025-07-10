@@ -1,5 +1,5 @@
 # Use official Python base image
-FROM python:3.13.5-slim
+FROM python:3.10-slim
 
 # Set working directory inside the container
 WORKDIR /app
@@ -13,4 +13,6 @@ COPY scripts/ scripts/
 COPY data/ data/
 
 # Run the training script
-CMD ["python", "scripts/train_model.py"]
+# Change working directory to scripts/ and run the Python script
+WORKDIR /app/scripts
+CMD ["python", "train_model.py"]

@@ -1,0 +1,89 @@
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Python virtual environment
+venv/
+env/
+.venv/
+.env/
+
+# pipenv files
+Pipfile.lock
+
+# pyenv
+.python-version
+
+# pyright / pylance
+typings/
+
+# VS Code
+.vscode/
+
+# IntelliJ IDEA (PyCharm, etc.)
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# MacOS system files
+.DS_Store
+
+# Logs and debugging
+*.log
+*.out
+
+# Unit test / coverage
+htmlcov/
+.tox/
+.nox/
+coverage.xml
+*.cover
+*.py,cover
+.cache/
+nosetests.xml
+test-results/
+
+# Data files
+*.h5
+*.hdf5
+*.db
+*.sqlite
+*.pkl
+*.joblib
+*.npy
+*.npz
+*.csv
+*.tsv
+*.parquet
+*.feather
+*.xls
+*.xlsx
+
+# Model artifacts
+checkpoints/
+runs/
+logs/
+models/
+*.ckpt
+*.pth
+*.pt
+*.onnx
+
+# MLFlow
+mlruns/
+
+# Temporary files
+*.swp
+*.bak
+*.tmp
+*.temp
+
+# Environment settings
+.env
+.env.*
+

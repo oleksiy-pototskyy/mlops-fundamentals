@@ -1,0 +1,27 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: titanic-train-job
+  labels:
+    app: titanic-trainer
+    version: v1
+spec:
+  template:
+    metadata:
+      labels:
+        app: titanic-trainer
+    spec:
+      containers:
+        - name: titanic-trainer
+          image: titanic-train:latest
+          imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "500m"
+            limits:
+              memory: "1Gi"
+              cpu: "1000m"
+      restartPolicy: Never
+  backoffLimit: 2
+  ttlSecondsAfterFinished: 3600

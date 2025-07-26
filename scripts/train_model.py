@@ -84,6 +84,7 @@ plt.show()
 
 # STEP 7: SAVE TRAINED MODEL
 # Save model for later use or deployment
+joblib.dump(X_train.columns.tolist(), "rf_model_titanic_columns.joblib")
 joblib.dump(model, 'rf_model_titanic.joblib')
 print("Model saved successfully!")
 

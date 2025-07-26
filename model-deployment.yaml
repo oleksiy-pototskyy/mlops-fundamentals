@@ -1,0 +1,68 @@
+# Kubernetes Deployment for ML Model Serving
+# Deployments manage long-running applications (unlike Jobs for one-time tasks)
+# This creates a persistent API service for real-time predictions
+
+apiVersion: apps/v1          # API version for application deployments
+kind: Deployment             # Resource type: manages replica sets and pods
+
+# METADATA: Information about this Deployment
+metadata:
+  name: rf-model             # Unique name for this deployment
+  labels:                    # Key-value pairs for organization
+    app: rf-model            # Application identifier
+
+# SPECIFICATION: How the Deployment should behave
+spec:
+  # SCALING: Number of identical pods to run
+  replicas: 1                # Start with 1 instance (can be scaled up/down)
+  
+  # SELECTOR: How to identify pods managed by this deployment
+  selector:
+    matchLabels:
+      app: rf-model          # Must match pod labels below
+  
+  # POD TEMPLATE: Blueprint for creating pods
+  template:
+    metadata:
+      labels:
+        app: rf-model        # Pod labels (must match selector above)
+    
+    # POD SPECIFICATION: What runs inside each pod
+    spec:
+      containers:
+        - name: rf-model                        # Container name
+          image: rf-titanic-observable:latest   # Docker image with Flask API
+          imagePullPolicy: Never               # Use local image (for development)
+          
+          # NETWORK PORTS: Expose container ports
+          ports:
+            - containerPort: 8000  # Flask API endpoint port
+            - containerPort: 8001  # Prometheus metrics port
+          
+          # OPTIONAL ADDITIONS (uncomment as needed):
+          # resources:
+          #   requests:
+          #     memory: "256Mi"
+          #     cpu: "250m"
+          #   limits:
+          #     memory: "512Mi"
+          #     cpu: "500m"
+          # 
+          # livenessProbe:           # Health check
+          #   httpGet:
+          #     path: /health
+          #     port: 8000
+          #   initialDelaySeconds: 30
+          # 
+          # readinessProbe:          # Ready to serve traffic
+          #   httpGet:
+          #     path: /ready
+          #     port: 8000
+          #   initialDelaySeconds: 5
+
+# USAGE:
+# kubectl apply -f model-deployment.yaml    # Deploy the model
+# kubectl get deployments                   # Check deployment status
+# kubectl get pods                          # See running pods
+# kubectl logs deployment/rf-model          # View application logs
+# kubectl scale deployment rf-model --replicas=3  # Scale to 3 instances

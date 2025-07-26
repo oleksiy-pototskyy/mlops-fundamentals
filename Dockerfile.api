@@ -1,0 +1,20 @@
+# Use official Python image
+FROM python:3.10-slim
+
+# Set working directory
+WORKDIR /app
+
+# Install dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy app and model files
+COPY scripts/ scripts/
+
+# Expose ports: 8000 for API, 8001 for Prometheus metrics
+EXPOSE 8000
+EXPOSE 8001
+
+# Start the app
+WORKDIR /app/scripts
+CMD ["python", "app.py"]

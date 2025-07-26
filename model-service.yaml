@@ -1,0 +1,62 @@
+# Kubernetes Services for ML Model API
+# Services provide stable network endpoints for accessing pods
+# Even if pods restart/move, the service IP/DNS remains constant
+
+# SERVICE 1: API ENDPOINT
+apiVersion: v1               # Core API version for services
+kind: Service                # Resource type: network abstraction
+metadata:
+  name: rf-model-api         # Service name (becomes DNS name)
+
+spec:
+  # SELECTOR: Which pods this service routes traffic to
+  selector:
+    app: rf-model            # Must match deployment pod labels
+  
+  # PORT CONFIGURATION: How traffic flows through the service
+  ports:
+    - name: http             # Port name (for reference)
+      protocol: TCP          # Network protocol
+      port: 8000             # Service port (what clients connect to)
+      targetPort: 8000       # Container port (where traffic goes)
+  
+  # SERVICE TYPE: ClusterIP (default) - internal cluster access only
+  # Other options: NodePort, LoadBalancer, ExternalName
+
+---  # YAML document separator
+
+# SERVICE 2: MONITORING ENDPOINT
+apiVersion: v1
+kind: Service
+metadata:
+  name: rf-metrics           # Separate service for Prometheus metrics
+
+spec:
+  # SELECTOR: Same pods, different port
+  selector:
+    app: rf-model            # Routes to same deployment pods
+  
+  # METRICS PORT CONFIGURATION
+  ports:
+    - name: metrics          # Descriptive name for monitoring port
+      protocol: TCP
+      port: 8001             # Prometheus scrapes this port
+      targetPort: 8001       # Container's metrics port
+
+# WHY TWO SERVICES?
+# - Separation of concerns: API traffic vs monitoring traffic
+# - Different access patterns: API for users, metrics for monitoring tools
+# - Security: Can apply different network policies to each service
+
+# USAGE:
+# kubectl apply -f model-service.yaml       # Create both services
+# kubectl get services                       # List all services
+# kubectl describe service rf-model-api      # Service details
+# 
+# ACCESS FROM INSIDE CLUSTER:
+# curl http://rf-model-api:8000/predict      # API endpoint
+# curl http://rf-metrics:8001/metrics        # Prometheus metrics
+# 
+# ACCESS FROM OUTSIDE CLUSTER (requires port-forward):
+# kubectl port-forward service/rf-model-api 8000:8000
+# curl http://localhost:8000/predict

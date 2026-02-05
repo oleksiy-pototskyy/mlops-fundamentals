@@ -374,3 +374,5 @@ For questions or issues:
 3. Ensure all prerequisites are met
 4. Verify file paths and permissions
 5. Test API endpoints with provided scripts
+
+Prepared by [Oleksiy Pototskyy](https://pototskyy.net/)
